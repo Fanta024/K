@@ -5,10 +5,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    userCk:[],
+    remarks:''
   },
   getters: {
   },
   mutations: {
+    setUserInfo(state,val){
+      state.userCk=val
+      
+    },
   },
   actions: {
   },
