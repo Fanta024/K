@@ -1,8 +1,24 @@
 <template>
   <div>
     <div class="box">
-      <div :class="{active:!isActive}" @click="isShow = false;isActive=false">注册</div>
-      <div :class="{active:isActive}" @click="isShow = true;isActive=true">登录</div>
+      <div
+        :class="{ active: !isActive }"
+        @click="
+          isShow = false;
+          isActive = false;
+        "
+      >
+        注册
+      </div>
+      <div
+        :class="{ active: isActive }"
+        @click="
+          isShow = true;
+          isActive = true;
+        "
+      >
+        登录
+      </div>
     </div>
     <div>
       <el-form v-if="!isShow">
@@ -37,7 +53,7 @@ export default {
       cookie: "",
       remarks: "",
       isShow: false,
-      isActive:false
+      isActive: false,
     };
   },
 
@@ -70,9 +86,14 @@ export default {
         if (this.cookie.length <= 11) {
           let remarks = this.cookie.trim();
           let result = await a.getUserList(remarks);
+          console.log(result);
           if (result.data.code == 200) {
-            this.$store.commit("setUserInfo", result.data.data);
-            this.$router.push("/userInfo");
+            if (result.data.data.length == 0) {
+              alert("未找到用户，请先注册");
+            } else {
+              this.$store.commit("setUserInfo", result.data.data);
+              this.$router.push("/userInfo");
+            }
           } else {
             alert(result.data.msg);
           }
@@ -89,18 +110,16 @@ export default {
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  
 
-  :nth-child(1){
+  :nth-child(1) {
     margin-right: 20px;
     cursor: pointer;
   }
-  :nth-child(2){
+  :nth-child(2) {
     cursor: pointer;
   }
 }
-.active{
+.active {
   color: #42b983;
 }
-
 </style>
