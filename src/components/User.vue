@@ -15,7 +15,8 @@
         placeholder="此处粘贴Cookie更新"
         @keyup.enter.native="updateCookie"
       />
-      <el-button type="success" auto @click="updateCookie">更新</el-button>
+      <div style="margin-top:10px"><el-button type="success" auto @click="updateCookie">更新</el-button></div>
+      
     </el-card>
   </div>
 </template>

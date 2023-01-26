@@ -73,7 +73,7 @@ export default {
         this.$store.commit("setUserInfo", data.data);
         this.$router.push("/userInfo");
       }else{
-        alert("请粘贴cookie")
+        alert("请粘贴正确cookie")
       }
     },
     async login() {
