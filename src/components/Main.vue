@@ -1,40 +1,34 @@
 <template>
   <div>
     <div class="box">
-      <div
-        :class="{ active: !isActive }"
-        @click="
-          isShow = false;
-          isActive = false;
-        "
-      >
+      <div :class="{ active: !isActive }" @click="
+        isShow = false;
+      isActive = false;
+      ">
         注册
       </div>
-      <div
-        :class="{ active: isActive }"
-        @click="
-          isShow = true;
-          isActive = true;
-        "
-      >
+      <div :class="{ active: isActive }" @click="
+        isShow = true;
+      isActive = true;
+      ">
         登录
       </div>
     </div>
     <div>
       <el-form v-if="!isShow">
-        <el-form-item label-width="150px" label="请在此处粘贴cookie">
-          <el-input v-model="cookie"></el-input>
+        <el-form-item>
+          <el-input v-model="cookie" clearable @keyup.enter.native="reg" placeholder="Cookie"></el-input>
         </el-form-item>
-        <el-form-item label-width="150px" label="QQ号">
-          <el-input v-model="remarks"></el-input>
+        <el-form-item>
+          <el-input v-model="remarks" clearable @keyup.enter.native="reg" placeholder="QQ号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="reg">注册</el-button>
         </el-form-item>
       </el-form>
       <el-form v-if="isShow">
-        <el-form-item label-width="150px" label="输入QQ号">
-          <el-input v-model="cookie"></el-input>
+        <el-form-item>
+          <el-input v-model="remarks" clearable @keyup.enter.native="login" placeholder="QQ号"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="login">登录</el-button>
@@ -57,7 +51,7 @@ export default {
     };
   },
 
-  mounted() {},
+  mounted() { },
 
   methods: {
     async reg() {
@@ -75,16 +69,17 @@ export default {
           return;
         }
         let { data } = await a.addUser({ cookie: ck, remarks: this.remarks });
-        console.log(data);
         alert(data.msg);
         this.$store.commit("setUserInfo", data.data);
         this.$router.push("/userInfo");
+      }else{
+        alert("请粘贴cookie")
       }
     },
     async login() {
-      if (isFinite(this.cookie)) {
-        if (this.cookie.length <= 11) {
-          let remarks = this.cookie.trim();
+      if (isFinite(this.remarks)) {
+        if (this.remarks.length <= 11) {
+          let remarks = this.remarks.trim();
           let result = await a.getUserList(remarks);
           console.log(result);
           if (result.data.code == 200) {
@@ -100,6 +95,9 @@ export default {
         } else alert("请输入QQ号");
       } else alert("请输入QQ号");
     },
+    test(){
+      console.log("test");
+    }
   },
 };
 </script>
@@ -115,10 +113,12 @@ export default {
     margin-right: 20px;
     cursor: pointer;
   }
+
   :nth-child(2) {
     cursor: pointer;
   }
 }
+
 .active {
   color: #42b983;
 }

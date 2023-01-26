@@ -13,7 +13,7 @@ export default {
     };
   },
 
-  mounted() {
+  created() {
     this.userListData = this.$store.state.userCk;
   },
 

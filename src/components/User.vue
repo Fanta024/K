@@ -1,27 +1,21 @@
 <template>
   <div>
-    <el-card class="box-card">
-      <div class="text item">
-        <div>
-          账号：{{ name }} 绑定QQ：{{ userData.remarks }} 状态：{{
-            userData.status ? "已过期" : "正常"
-          }}
-        </div>
-
-        <div class="header">更新cookie</div>
-        <div class="card">
-          <div class="card-body text-center">
-            <el-input
-              v-model="cookie"
-              style="min-width: 300px"
-              @keyup.enter="updateCookie"
-              clearable
-              class="my-4 w-full"
-            />
-          </div>
-          <el-button type="success" auto @click="updateCookie">更新</el-button>
-        </div>
+    <el-card class="box-card" shadow="hover">
+      <div>
+        账号：{{ name }} 绑定QQ：{{ userData.remarks }} 状态：{{
+          userData.status ? "已过期" : "正常"
+        }}
+        上次更新时间:{{ userData.updatedAt }} 预计过期时间：{{
+          userData.status ? "已过期" : expirationTime
+        }}
       </div>
+      <el-input
+        v-model="cookie"
+        clearable
+        placeholder="此处粘贴Cookie更新"
+        @keyup.enter.native="updateCookie"
+      />
+      <el-button type="success" auto @click="updateCookie">更新</el-button>
     </el-card>
   </div>
 </template>
@@ -34,18 +28,22 @@ export default {
     return {
       cookie: "",
       userData: [],
-      name:''
+      name: "",
     };
   },
 
-  mounted() {
+  created() {
     this.userData = this.userDataProps;
-    this.name=this.userData.value.match(/pt_pin=(.*?);/) && this.userData.value.match(/pt_pin=(.*?);/)[1]
+    this.userData.updatedAt = this.dayjs(this.userData.updatedAt).format(
+      "M-DD HH:mm"
+    );
+    this.name =
+      this.userData.value.match(/pt_pin=(.*?);/) &&
+      this.userData.value.match(/pt_pin=(.*?);/)[1];
   },
 
   methods: {
     async updateCookie() {
-      let userId = this.userData.id;
       if (this.cookie.indexOf("pt_key=") !== -1) {
         const pt_Key =
           this.cookie.match(/pt_key=(.*?);/) &&
@@ -54,25 +52,33 @@ export default {
           this.cookie.match(/pt_pin=(.*?);/) &&
           this.cookie.match(/pt_pin=(.*?);/)[1];
         let ck = "pt_key=" + pt_Key + ";pt_pin=" + pt_Pin + ";";
+        let userId = this.userData.id;
         let body = {
           _id: userId,
           value: ck,
           remarks: this.userData.remarks,
-        }
+        };
         let rs = await api.updateUser(body);
-        console.log(rs);
-        alert(rs.data.msg)
-        this.$router.push('/')
-
+        alert(rs.data.msg);
+        //Todo 刷新用户数据  vuex
+        this.$router.push("/");
+      } else {
+        alert("请输入正确Cookie");
       }
     },
   },
-  
+  computed: {
+    expirationTime() {
+      return this.dayjs(this.userData.updatedAt)
+        .add("30", "day")
+        .format("M-DD");
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
-.text {
-  margin-bottom: 20px;
+.box-card{
+  margin-bottom: 10px;
 }
 </style>
