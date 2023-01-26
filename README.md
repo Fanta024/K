@@ -24,7 +24,7 @@ yarn build:prod
 ```
 or
 ```
-npm run serve
+npm run build:prod
 ```
 
 ### Customize configuration
