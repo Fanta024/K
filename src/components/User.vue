@@ -2,12 +2,19 @@
   <div>
     <el-card class="box-card" shadow="hover">
       <div>
-        账号：{{ name }} 绑定QQ：{{ userData.remarks }} 状态：{{
-          userData.status ? "已过期" : "正常"
-        }}
-        上次更新时间:{{ userData.updatedAt }} 预计过期时间：{{
-          userData.status ? "已过期" : expirationTime
-        }}
+        
+        <div>
+          账号：{{ name }} 绑定QQ：{{ userData.remarks }} 状态：{{
+            userData.status ? "已过期" : "正常"
+          }}
+        </div>
+        <div v-if="!userData.status">
+          上次更新时间:{{ userData.updatedAt }} 预计过期时间：{{
+            expirationTime
+          }}
+        </div>
+        <div v-if="userData.status">过期时间{{ userData.updatedAt }}</div>
+
       </div>
       <el-input
         v-model="cookie"
@@ -15,8 +22,9 @@
         placeholder="此处粘贴Cookie更新"
         @keyup.enter.native="updateCookie"
       />
-      <div style="margin-top:10px"><el-button type="success" auto @click="updateCookie">更新</el-button></div>
-      
+      <div style="margin-top: 10px">
+        <el-button type="success" auto @click="updateCookie">更新</el-button>
+      </div>
     </el-card>
   </div>
 </template>
@@ -79,7 +87,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.box-card{
+.box-card {
   margin-bottom: 10px;
 }
 </style>

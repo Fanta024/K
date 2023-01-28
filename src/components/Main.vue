@@ -81,7 +81,6 @@ export default {
         if (this.remarks.length <= 11) {
           let remarks = this.remarks.trim();
           let result = await a.getUserList(remarks);
-          console.log(result);
           if (result.data.code == 200) {
             if (result.data.data.length == 0) {
               alert("未找到用户，请先注册");
