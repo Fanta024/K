@@ -70,10 +70,11 @@ export default {
         }
         let { data } = await a.addUser({ cookie: ck, remarks: this.remarks });
         alert(data.msg);
-        this.$store.commit("setUserInfo", data.data);
+        // this.$store.commit("setUserInfo", data.data);
+        this.$store.commit("setUserRemark", this.remarks);
         this.$router.push("/userInfo");
-      }else{
-        alert("请粘贴正确cookie")
+      } else {
+        alert("请粘贴正确cookie");
       }
     },
     async login() {
@@ -85,7 +86,8 @@ export default {
             if (result.data.data.length == 0) {
               alert("未找到用户，请先注册");
             } else {
-              this.$store.commit("setUserInfo", result.data.data);
+              // this.$store.commit("setUserInfo", result.data.data);
+              this.$store.commit("setUserRemark", this.remarks);
               this.$router.push("/userInfo");
             }
           } else {

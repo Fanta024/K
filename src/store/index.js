@@ -15,6 +15,9 @@ export default new Vuex.Store({
       state.userCk=val
       
     },
+    setUserRemark(state,val){
+      state.remarks=val;
+    }
   },
   actions: {
   },

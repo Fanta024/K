@@ -6,6 +6,7 @@
 
 <script>
 import UserVue from '@/components/User.vue'
+import {getUserList} from '@/api/index'
 export default {
   data() {
     return {
@@ -14,7 +15,9 @@ export default {
   },
 
   created() {
-    this.userListData = this.$store.state.userCk;
+      getUserList(this.$store.state.remarks).then(r=>{
+      this.userListData=r.data.data;
+    })
   },
 
   methods: {

@@ -33,7 +33,11 @@ router.beforeEach((to,from,next)=>{
  if(to.path==='/userInfo'){
   if(store.state.userCk.length>0){
     next()
-  }else{
+  }
+  else if(store.state.remarks>0){
+    next()
+  }
+  else{
     alert('请先注册或登录')
     next('/')
   }

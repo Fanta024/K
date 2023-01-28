@@ -69,7 +69,7 @@ export default {
         };
         let rs = await api.updateUser(body);
         alert(rs.data.msg);
-        //Todo 刷新用户数据  vuex
+        // TODO 刷新用户数据  vuex
         this.$router.push("/");
       } else {
         alert("请输入正确Cookie");
