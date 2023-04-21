@@ -16,3 +16,11 @@ export function addUser(cookie){
 export function updateUser(body){
     return api.post('update',{json:body}).json()
 }
+
+export function watering(cookie){
+    return api.post('watering',{json:cookie},
+    ).json()
+}
+export function pause(){
+    return api.get('pause').json();
+}

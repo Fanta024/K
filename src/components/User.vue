@@ -2,7 +2,6 @@
   <div>
     <el-card class="box-card" shadow="hover">
       <div>
-        
         <div>
           账号：{{ name }} 绑定QQ：{{ userData.remarks }} 状态：{{
             userData.status ? "已过期" : "正常"
@@ -14,7 +13,6 @@
           }}
         </div>
         <div v-if="userData.status">过期时间{{ userData.updatedAt }}</div>
-
       </div>
       <el-input
         v-model="cookie"
@@ -24,6 +22,8 @@
       />
       <div style="margin-top: 10px">
         <el-button type="success" auto @click="updateCookie">更新</el-button>
+        <el-button type="success" auto @click="watering">浇水</el-button>
+        <el-button type="success" auto @click="pause">暂停浇水</el-button>
       </div>
     </el-card>
   </div>
@@ -75,6 +75,15 @@ export default {
         alert("请输入正确Cookie");
       }
     },
+    async watering() {
+      let {data:res} = await api.watering(this.userDataProps);
+      alert("开始浇水");
+      alert(res.msg)
+    },
+   async pause(){
+      let {data:res}=await api.pause();
+     alert(res.msg)
+    } 
   },
   computed: {
     expirationTime() {
