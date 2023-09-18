@@ -22,8 +22,8 @@
       />
       <div style="margin-top: 10px">
         <el-button type="success" auto @click="updateCookie">更新</el-button>
-        <el-button type="success" auto @click="watering">浇水</el-button>
-        <el-button type="success" auto @click="pause">暂停浇水</el-button>
+        <el-button v-if="!userData.status" type="success" auto :disabled="isStart" @click="watering" >浇水</el-button>
+        <el-button v-if="!userData.status" type="success" auto :disabled="!isStart" @click="pause" >暂停浇水</el-button>
       </div>
     </el-card>
   </div>
@@ -38,11 +38,13 @@ export default {
       cookie: "",
       userData: [],
       name: "",
+      isStart: false,
     };
   },
 
   created() {
     this.userData = this.userDataProps;
+    console.log(this.userData);
     this.userData.updatedAt = this.dayjs(this.userData.updatedAt).format(
       "M-DD HH:mm"
     );
@@ -68,22 +70,25 @@ export default {
           remarks: this.userData.remarks,
         };
         let rs = await api.updateUser(body);
-        alert(rs.data.msg);
+        alert(rs.message);
         // TODO 刷新用户数据  vuex
-        this.$router.push("/");
+        // this.$router.push("/");
+        this.$router.go(0)
       } else {
         alert("请输入正确Cookie");
       }
     },
     async watering() {
-      let {data:res} = await api.watering(this.userDataProps);
+      this.isStart = true;
+      let { data: res } = await api.watering(this.userDataProps);
       alert("开始浇水");
-      alert(res.msg)
+      alert(res.msg);
     },
-   async pause(){
-      let {data:res}=await api.pause();
-     alert(res.msg)
-    } 
+    async pause() {
+      this.isStart = false;
+      let { data: res } = await api.pause();
+      alert(res.msg);
+    },
   },
   computed: {
     expirationTime() {

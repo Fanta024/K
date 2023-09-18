@@ -5,17 +5,26 @@
         isShow = false;
       isActive = false;
       ">
-        注册
+        登录
       </div>
       <div :class="{ active: isActive }" @click="
         isShow = true;
       isActive = true;
       ">
-        登录
+        注册
       </div>
+
     </div>
     <div>
       <el-form v-if="!isShow">
+        <el-form-item>
+          <el-input v-model="remarks" clearable @keyup.enter.native="login" placeholder="QQ号"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="login">登录</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form v-if="isShow">
         <el-form-item>
           <el-input v-model="cookie" clearable @keyup.enter.native="reg" placeholder="Cookie"></el-input>
         </el-form-item>
@@ -26,14 +35,7 @@
           <el-button type="primary" @click="reg">注册</el-button>
         </el-form-item>
       </el-form>
-      <el-form v-if="isShow">
-        <el-form-item>
-          <el-input v-model="remarks" clearable @keyup.enter.native="login" placeholder="QQ号"></el-input>
-        </el-form-item>
-        <el-form-item>
-          <el-button type="primary" @click="login">登录</el-button>
-        </el-form-item>
-      </el-form>
+
     </div>
   </div>
 </template>
@@ -51,7 +53,10 @@ export default {
     };
   },
 
-  mounted() { },
+  mounted() {
+    this.remarks=localStorage.getItem("remarks");
+    console.log(this.remarks);
+   },
 
   methods: {
     async reg() {
@@ -68,8 +73,8 @@ export default {
           alert("未输入绑定QQ号");
           return;
         }
-        let { data } = await a.addUser({ cookie: ck, remarks: this.remarks });
-        alert(data.msg);
+        let { message } = await a.addUser({ cookie: ck, remarks: this.remarks });
+        alert(message);
         // this.$store.commit("setUserInfo", data.data);
         this.$store.commit("setUserRemark", this.remarks);
         this.$router.push("/userInfo");
@@ -82,23 +87,23 @@ export default {
         if (this.remarks.length <= 11) {
           let remarks = this.remarks.trim();
           let result = await a.getUserList(remarks);
-          if (result.data.code == 200) {
-            if (result.data.data.length == 0) {
+          console.log(result);
+          if (result.code == 200) {
+            if (result.data.length == 0) {
               alert("未找到用户，请先注册");
             } else {
               // this.$store.commit("setUserInfo", result.data.data);
+              localStorage.setItem("remarks",this.remarks)
               this.$store.commit("setUserRemark", this.remarks);
               this.$router.push("/userInfo");
             }
           } else {
-            alert(result.data.msg);
+            alert(result.message);
           }
         } else alert("请输入QQ号");
       } else alert("请输入QQ号");
     },
-    test(){
-      console.log("test");
-    }
+
   },
 };
 </script>

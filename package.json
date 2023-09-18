@@ -4,12 +4,14 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:prod": "vue-cli-service serve --mode prod",
     "serve:dev": "vue-cli-service serve --mode dev",
     "build": "vue-cli-service build",
     "build:prod": "vue-cli-service build --mode prod"
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "dayjs": "^1.11.9",
     "element-ui": "^2.15.12",
     "ky": "^0.33.0",
     "vue": "^2.6.14",
@@ -19,10 +21,9 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
     "@vue/cli-plugin-router": "~5.0.0",
-    
     "@vue/cli-plugin-vuex": "~5.0.0",
     "@vue/cli-service": "~5.0.0",
-    "less-loader": "^11.1.0",
+    "less-loader": "^6.2.0",
     "sass-loader": "^13.2.0",
     "vue-template-compiler": "^2.6.14"
   }
