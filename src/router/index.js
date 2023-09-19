@@ -18,9 +18,6 @@ const routes = [
   {
     path: '/userInfo',
     name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () => import(/* webpackChunkName: "about" */ '../views/UserInfoView.vue')
   }
 ]
@@ -33,7 +30,14 @@ router.beforeEach((to,from,next)=>{
  if(to.path==='/userInfo'){
   if(store.state.userCk.length>0){
     next()
-  }else{
+  }
+  else if(store.state.remarks>0){
+    next()
+  }
+  else if(localStorage.getItem('remarks')!=null){
+    next()
+  }
+  else{
     alert('请先注册或登录')
     next('/')
   }
