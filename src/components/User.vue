@@ -22,14 +22,29 @@
       />
       <div style="margin-top: 10px">
         <el-button type="success" auto @click="updateCookie">更新</el-button>
-        <el-button v-if="!userData.status" type="success" auto :disabled="isStart" @click="watering" >浇水</el-button>
-        <el-button v-if="!userData.status" type="success" auto :disabled="!isStart" @click="pause" >暂停浇水</el-button>
+        <el-button
+          v-if="!userData.status"
+          type="success"
+          auto
+          :disabled="isStart"
+          @click="watering"
+          >浇水</el-button
+        >
+        <el-button
+          v-if="!userData.status"
+          type="success"
+          auto
+          :disabled="!isStart"
+          @click="pause"
+          >暂停浇水</el-button
+        >
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
+import { checkCk } from "@/utils/index.js";
 import * as api from "../api/index.js";
 export default {
   props: ["userDataProps"],
@@ -44,7 +59,6 @@ export default {
 
   created() {
     this.userData = this.userDataProps;
-    console.log(this.userData);
     this.userData.updatedAt = this.dayjs(this.userData.updatedAt).format(
       "M-DD HH:mm"
     );
@@ -55,28 +69,19 @@ export default {
 
   methods: {
     async updateCookie() {
-      if (this.cookie.indexOf("pt_key=") !== -1) {
-        const pt_Key =
-          this.cookie.match(/pt_key=(.*?);/) &&
-          this.cookie.match(/pt_key=(.*?);/)[1];
-        const pt_Pin =
-          this.cookie.match(/pt_pin=(.*?);/) &&
-          this.cookie.match(/pt_pin=(.*?);/)[1];
-        let ck = "pt_key=" + pt_Key + ";pt_pin=" + pt_Pin + ";";
-        let userId = this.userData.id;
-        let body = {
-          _id: userId,
-          value: ck,
-          remarks: this.userData.remarks,
-        };
-        let rs = await api.updateUser(body);
-        alert(rs.message);
-        // TODO 刷新用户数据  vuex
-        // this.$router.push("/");
-        this.$router.go(0)
-      } else {
-        alert("请输入正确Cookie");
+      let ck = checkCk(this.cookie);
+      if (ck == null) {
+        return;
       }
+      let userId = this.userData.id;
+      let body = {
+        _id: userId,
+        value: ck,
+        remarks: this.userData.remarks,
+      };
+      let rs = await api.updateUser(body);
+      alert(rs.message);
+      this.$router.go(0);
     },
     async watering() {
       this.isStart = true;

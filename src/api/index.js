@@ -2,7 +2,6 @@ import ky from 'ky'
 const api = ky.create({prefixUrl: process.env.VUE_APP_BASE_URL, retry: {limit: 2}})
 const api2 = ky.create({prefixUrl: process.env.VUE_APP_BASE_URL2})
 
-console.log(process.env.VUE_APP_BASE_URL);
 export function getUserList(remarks){
     return api2.get('info',{
         searchParams:{
