@@ -31,7 +31,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="login">登录</el-button>
+          <el-button v-no-more-click type="primary" @click="login">登录</el-button>
         </el-form-item>
       </el-form>
       <el-form v-if="isShow">
@@ -52,7 +52,7 @@
           ></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="reg">注册</el-button>
+          <el-button v-no-more-click type="primary" @click="reg">注册</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -91,7 +91,7 @@ export default {
       }
       let { message } = await a.addUser({ cookie: ck, remarks: this.remarks });
       alert(message);
-      // this.$store.commit("setUserInfo", data.data);
+      localStorage.setItem("remarks", this.remarks);
       this.$store.commit("setUserRemark", this.remarks);
       this.$router.push("/userInfo");
     },

@@ -21,7 +21,7 @@
         @keyup.enter.native="updateCookie"
       />
       <div style="margin-top: 10px">
-        <el-button type="success" auto @click="updateCookie">更新</el-button>
+        <el-button v-no-more-click type="success" auto @click="updateCookie">更新</el-button>
         <el-button
           v-if="!userData.status"
           type="success"

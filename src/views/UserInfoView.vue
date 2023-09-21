@@ -8,7 +8,7 @@
     <div class="addBox" v-if="userListData.length != 0">
       <div>添加cookie</div>
       <el-input v-model="cookie" placeholder="请输入Cookie"></el-input>
-      <el-button @click="addNewCk">添加</el-button>
+      <el-button v-no-more-click @click="addNewCk">添加</el-button>
     </div>
     <div v-else>请先登录或注册</div>
   </div>

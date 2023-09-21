@@ -8,6 +8,19 @@ import dayjs from 'dayjs';
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 Vue.prototype.dayjs=dayjs
+// 提交以后禁用按钮一段时间，防止重复提交
+Vue.directive('noMoreClick', {
+  inserted(el, binding) {
+    el.addEventListener('click', e => {
+      el.classList.add('is-disabled')
+      el.disabled = true
+      setTimeout(() => {
+        el.disabled = false
+        el.classList.remove('is-disabled')
+      }, 2000)//2000ms
+    })
+  }
+})
 new Vue({
   router,
   store,
